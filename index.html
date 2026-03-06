@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>niko-devops — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg2: #f0f4f8;
+      --ink: #0a0a0a;
+      --ink2: #4a5568;
+      --green: #16a34a;
+      --green-light: #dcfce7;
+      --blue: #0ea5e9;
+      --blue-light: #e0f2fe;
+      --border: #e2e8f0;
+      --card: #f8fafc;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--green); }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink2);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--green); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 6rem 4rem 4rem;
+      gap: 4rem;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--blue-light) 0%, var(--green-light) 100%);
+      z-index: 0;
+      clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
+    }
+
+    .hero-text { position: relative; z-index: 1; }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--green);
+      background: var(--green-light);
+      border: 1px solid var(--green);
+      padding: 0.3rem 0.8rem;
+      border-radius: 2rem;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 .name {
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--ink2);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      max-width: 480px;
+    }
+
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary { background: var(--ink); color: white; }
+    .btn-primary:hover { background: var(--green); transform: translateY(-2px); }
+
+    .btn-secondary { background: transparent; color: var(--ink); border: 2px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
+
+    .hero-visual { position: relative; z-index: 1; display: flex; justify-content: center; }
+
+    .terminal {
+      background: #0a0a0a;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-red { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green { background: #28c840; }
+    .terminal-title { font-size: 0.75rem; color: #666; margin-left: auto; }
+
+    .terminal-line { font-size: 0.82rem; line-height: 1.9; opacity: 0; transition: opacity 0.3s; }
+    .t-prompt { color: var(--green); }
+    .t-cmd { color: #ffffff; }
+    .t-output { color: #94a3b8; }
+    .t-blue { color: var(--blue); }
+    .t-green { color: #4ade80; }
+
+    .cursor {
+      display: inline-block;
+      width: 8px; height: 14px;
+      background: var(--green);
+      vertical-align: middle;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* STACK */
+    .stack-section {
+      padding: 5rem 4rem;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--blue);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 3rem;
+      letter-spacing: -0.02em;
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+
+    .stack-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stack-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .stack-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+    .stack-card:hover::before { opacity: 1; }
+
+    .stack-icon { font-size: 1.5rem; }
+    .stack-name { font-size: 0.9rem; font-weight: 600; }
+    .stack-level { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--green); }
+
+    /* PROJECTS */
+    .projects-section { padding: 5rem 4rem; }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.8rem;
+      transition: all 0.2s;
+    }
+
+    .project-card:hover { transform: translateY(-4px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
+
+    .project-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .project-icon {
+      width: 44px; height: 44px;
+      border-radius: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .project-icon.green { background: var(--green-light); }
+    .project-icon.blue { background: var(--blue-light); }
+
+    .project-links { display: flex; gap: 0.5rem; }
+    .project-link {
+      width: 32px; height: 32px;
+      border-radius: 0.4rem;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 0.85rem;
+      color: var(--ink2);
+      transition: all 0.2s;
+    }
+    .project-link:hover { border-color: var(--green); color: var(--green); }
+
+    .project-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .project-desc { font-size: 0.88rem; color: var(--ink2); line-height: 1.6; margin-bottom: 1rem; }
+
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 0.3rem;
+      background: var(--bg2);
+      color: var(--ink2);
+      border: 1px solid var(--border);
+    }
+
+    .empty-card {
+      border: 2px dashed var(--border);
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 200px;
+      color: var(--ink2);
+      gap: 0.5rem;
+    }
+
+    .empty-card .plus { font-size: 2rem; color: var(--border); }
+    .empty-card p { font-size: 0.85rem; }
+
+    /* CONTACT */
+    .contact-section {
+      padding: 5rem 4rem;
+      background: var(--ink);
+      color: white;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .contact-section .section-label { color: var(--blue); }
+    .contact-section .section-title { color: white; }
+    .contact-desc { color: #94a3b8; line-height: 1.7; margin-bottom: 2rem; }
+
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      border: 1px solid #2d2d2d;
+      border-radius: 0.75rem;
+      text-decoration: none;
+      color: white;
+      transition: all 0.2s;
+    }
+
+    .contact-link:hover { border-color: var(--green); background: rgba(22,163,74,0.05); }
+
+    .contact-link-icon {
+      width: 36px; height: 36px;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .contact-link-icon.green { background: rgba(22,163,74,0.15); }
+    .contact-link-icon.blue { background: rgba(14,165,233,0.15); }
+
+    .contact-link-text { font-size: 0.9rem; font-weight: 600; }
+    .contact-link-sub { font-size: 0.75rem; color: #64748b; font-family: 'DM Mono', monospace; }
+
+    /* FOOTER */
+    footer {
+      padding: 1.5rem 4rem;
+      background: #050505;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: #333; }
+    footer span { color: var(--green); }
+
+    /* ANIMATIONS */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 5rem 1.5rem 3rem; }
+      .hero::before { display: none; }
+      .hero-visual { display: none; }
+      .stack-section, .projects-section { padding: 3rem 1.5rem; }
+      .contact-section { padding: 3rem 1.5rem; grid-template-columns: 1fr; }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-logo">niko<span>-devops</span></a>
+    <ul class="nav-links">
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-text fade-in">
+      <div class="hero-tag">Available for work</div>
+      <h1>Hey, I'm<br><span class="name">niko-devops</span></h1>
+      <p class="hero-desc">
+        Pavel Shelikhov - junior DevOps Engineer. I build and automate infrastructure — Linux, Docker, Kubernetes. Currently learning CI/CD and Terraform.
+      </p>
+      <div class="hero-btns">
+        <a href="https://github.com/niko-devops" target="_blank" class="btn btn-primary">⚡ GitHub Profile</a>
+        <a href="#projects" class="btn btn-secondary">View Projects →</a>
+      </div>
+    </div>
+
+    <div class="hero-visual fade-in">
+      <div class="terminal">
+        <div class="terminal-header">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+          <span class="terminal-title">niko@goyda ~</span>
+        </div>
+        <div class="terminal-line"><span class="t-prompt">❯ </span><span class="t-cmd">kubectl get nodes</span></div>
+        <div class="terminal-line"><span class="t-output">NAME    STATUS   ROLES</span></div>
+        <div class="terminal-line"><span class="t-green">goyda   Ready    control-plane</span></div>
+        <div class="terminal-line" style="margin-top:0.5rem"><span class="t-prompt">❯ </span><span class="t-cmd">docker ps</span></div>
+        <div class="terminal-line"><span class="t-blue">my-site   Up 2 hours   :80</span></div>
+        <div class="terminal-line" style="margin-top:0.5rem"><span class="t-prompt">❯ </span><span class="t-cmd">git push origin main</span></div>
+        <div class="terminal-line"><span class="t-green">✓ CI/CD triggered...</span></div>
+        <div class="terminal-line"><span class="t-prompt">❯ </span><span class="cursor"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stack-section" id="stack">
+    <p class="section-label fade-in">// tools & technologies</p>
+    <h2 class="section-title fade-in">My Stack</h2>
+    <div class="stack-grid">
+      <div class="stack-card fade-in"><div class="stack-icon">🐧</div><div class="stack-name">Linux</div><div class="stack-level">6 months</div></div>
+      <div class="stack-card fade-in"><div class="stack-icon">🐳</div><div class="stack-name">Docker</div><div class="stack-level">Learning</div></div>
+      <div class="stack-card fade-in"><div class="stack-icon">☸️</div><div class="stack-name">Kubernetes</div><div class="stack-level">Learning</div></div>
+      <div class="stack-card fade-in"><div class="stack-icon">⚙️</div><div class="stack-name">k3s</div><div class="stack-level">Learning</div></div>
+      <div class="stack-card fade-in"><div class="stack-icon">🔀</div><div class="stack-name">Git</div><div class="stack-level">Learning</div></div>
+      <div class="stack-card fade-in"><div class="stack-icon">📜</div><div class="stack-name">Bash</div><div class="stack-level">Learning</div></div>
+      <div class="stack-card fade-in"><div class="stack-icon">🚀</div><div class="stack-name">CI/CD</div><div class="stack-level">In progress</div></div>
+      <div class="stack-card fade-in"><div class="stack-icon">🌍</div><div class="stack-name">Terraform</div><div class="stack-level">Next up</div></div>
+    </div>
+  </section>
+
+  <section class="projects-section" id="projects">
+    <p class="section-label fade-in">// what i've built</p>
+    <h2 class="section-title fade-in">Projects</h2>
+    <div class="projects-grid">
+      <div class="project-card fade-in">
+        <div class="project-card-header">
+          <div class="project-icon green">🐳</div>
+          <div class="project-links">
+            <a href="https://github.com/niko-devops/MyFirsDockerSIte" target="_blank" class="project-link">↗</a>
+          </div>
+        </div>
+        <div class="project-name">MyFirstDockerSite</div>
+        <div class="project-desc">Static site deployed with Docker and Kubernetes on k3s. My first real infrastructure project.</div>
+        <div class="project-tags">
+          <span class="tag">Docker</span>
+          <span class="tag">Kubernetes</span>
+          <span class="tag">Nginx</span>
+          <span class="tag">HTML/CSS</span>
+        </div>
+      </div>
+      <div class="project-card empty-card fade-in">
+        <div class="plus">+</div>
+        <p>Next project coming soon</p>
+        <p style="font-family:'DM Mono',monospace;font-size:0.7rem;color:#aaa;">CI/CD Pipeline</p>
+      </div>
+      <div class="project-card empty-card fade-in">
+        <div class="plus">+</div>
+        <p>Next project coming soon</p>
+        <p style="font-family:'DM Mono',monospace;font-size:0.7rem;color:#aaa;">Terraform + Cloud</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-section" id="contact">
+    <div class="fade-in">
+      <p class="section-label">// get in touch</p>
+      <h2 class="section-title">Let's Connect</h2>
+      <p class="contact-desc">Pavel Shelikhov - junior DevOps engineer open to opportunities, internships, and collaborations. Feel free to reach out!</p>
+      <a href="https://github.com/niko-devops" target="_blank" class="btn btn-primary">⚡ GitHub →</a>
+    </div>
+    <div class="contact-links fade-in">
+      <a href="https://github.com/niko-devops" target="_blank" class="contact-link">
+        <div class="contact-link-icon green">⚡</div>
+        <div>
+          <div class="contact-link-text">GitHub</div>
+          <div class="contact-link-sub">github.com/niko-devops</div>
+        </div>
+      </a>
+      <div class="contact-link" style="cursor:default;">
+        <div class="contact-link-icon blue">📍</div>
+        <div>
+          <div class="contact-link-text">Location</div>
+          <div class="contact-link-sub">Baikal, Russia</div>
+        </div>
+      </div>
+      <div class="contact-link" style="cursor:default;">
+        <div class="contact-link-icon green">🟢</div>
+        <div>
+          <div class="contact-link-text">Status</div>
+          <div class="contact-link-sub">Open to work · Junior DevOps</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 <span>niko-devops</span></p>
+    <p>Built with <span>Docker</span> · Deployed on <span>k3s</span></p>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    document.querySelectorAll('.terminal-line').forEach((line, i) => {
+      setTimeout(() => { line.style.opacity = '1'; }, 800 + i * 300);
+    });
+  </script>
+</body>
+</html>
